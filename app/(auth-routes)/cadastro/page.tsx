@@ -117,7 +117,7 @@ export default function Register() {
                 color="default"
                 endContent={
                   <button
-                    aria-label="toggle password visibility"
+                    aria-label="toggle Admin Code visibility"
                     className="focus:outline-none"
                     type="button"
                     onClick={toggleCodeVisibility}
