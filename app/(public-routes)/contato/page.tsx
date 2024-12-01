@@ -25,15 +25,16 @@ export default function Contact() {
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.current) return;
-    if (!serviceID || !templateID || !publicKey) return;
+    if (!form.current || !serviceID || !templateID || !publicKey) {
+      setError(true);
+      return;
+    }
 
     setLoading(true);
-    
+    setError(false);
+
     emailjs
-      .sendForm(serviceID, templateID, form.current, {
-        publicKey: publicKey,
-      })
+      .sendForm(serviceID, templateID, form.current, publicKey)
       .then(
         () => {
           form.current?.reset();
@@ -44,13 +45,13 @@ export default function Contact() {
           }, 10 * 1000);
         },
         (error: Error) => {
+          console.error("Erro ao enviar email:", error);
           setError(true);
           setLoading(false);
         }
       );
   };
 
-  
   return (
     <>
       <section className="relative bg-capi_gray_contact flex items-center justify-center gap-8 p-8">
@@ -69,18 +70,20 @@ export default function Contact() {
         </h3>
         <form
           ref={form}
+          data-testid="contact-form"
           className="mt-12 flex flex-col items-center gap-8"
           onSubmit={sendEmail}
         >
           <div className="w-full flex flex-col gap-2 sm:w-2/3">
             <Input
+              data-testid="input-Nome"
               required
-              className="w-full "
+              className="w-full"
               color="default"
               label="Nome"
               labelPlacement="outside"
-              // placeholder="Digite seu nome"
               type="text"
+              name="name"
               value={name}
               variant="faded"
               onChange={(e) => setName(e.target.value)}
@@ -89,13 +92,12 @@ export default function Contact() {
 
           <div className="w-full flex flex-col gap-2 sm:w-2/3">
             <Input
+              data-testid="input-E-Mail"
               required
               className="w-full"
-              id="email"
               label="E-Mail"
               labelPlacement="outside"
               name="email"
-              // placeholder="Digite seu e-mail"
               type="email"
               value={email}
               variant="faded"
@@ -105,13 +107,12 @@ export default function Contact() {
 
           <div className="w-full flex flex-col gap-2 sm:w-2/3">
             <Input
+              data-testid="input-Assunto"
               required
-              className="w-full capi_vsm:flex-1"
-              id="subject"
+              className="w-full"
               label="Assunto"
               labelPlacement="outside"
               name="subject"
-              // placeholder="Digite o assunto"
               type="text"
               value={subject}
               variant="faded"
@@ -121,14 +122,11 @@ export default function Contact() {
 
           <div className="w-full flex flex-col gap-2 sm:w-2/3">
             <Textarea
+              data-testid="textarea-Mensagem"
               disableAnimation
               disableAutosize
               required
               className="w-full"
-              classNames={{
-                base: "max-w-xxl",
-                input: "resize-y min-h-[40px]",
-              }}
               id="message"
               label="Mensagem"
               labelPlacement="outside"
@@ -141,17 +139,29 @@ export default function Contact() {
           </div>
 
           <Button
+            data-testid="submit-button"
             className="capiButtons flex items-center gap-2 text-white font-bold bg-capi_blue hover:bg-blue-400 shadow-xl"
             type="submit"
+            disabled={loading}
           >
-            {loading && <FaSpinner className="h-4 w-4 animate-spin" />}
-            {success && <HiCheckCircle className="h4- w-4 animate-ping" />}
-            Enviar
+            {loading ? (
+              <FaSpinner className="h-4 w-4 animate-spin" />
+            ) : success ? (
+              <HiCheckCircle className="h-4 w-4 text-green-500" />
+            ) : (
+              "Enviar"
+            )}
           </Button>
 
           {error && (
-            <p className="font-bold text-red-600">
-              Ocorreu um erro ao enviar a mensagem, por favor, tente novamente.
+            <p data-testid="error-message" className="font-bold text-red-600">
+              Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.
+            </p>
+          )}
+
+          {success && (
+            <p data-testid="success-message" className="font-bold text-green-600">
+              Mensagem enviada com sucesso!
             </p>
           )}
         </form>
