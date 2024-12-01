@@ -33,23 +33,21 @@ export default function Contact() {
     setLoading(true);
     setError(false);
 
-    emailjs
-      .sendForm(serviceID, templateID, form.current, publicKey)
-      .then(
-        () => {
-          form.current?.reset();
-          setSuccess(true);
-          setLoading(false);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 10 * 1000);
-        },
-        (error: Error) => {
-          console.error("Erro ao enviar email:", error);
-          setError(true);
-          setLoading(false);
-        }
-      );
+    emailjs.sendForm(serviceID, templateID, form.current, publicKey).then(
+      () => {
+        form.current?.reset();
+        setSuccess(true);
+        setLoading(false);
+        setTimeout(() => {
+          setSuccess(false);
+        }, 10 * 1000);
+      },
+      (error: Error) => {
+        // console.error("Erro ao enviar email:", error);
+        setError(true);
+        setLoading(false);
+      }
+    );
   };
 
   return (
@@ -160,7 +158,10 @@ export default function Contact() {
           )}
 
           {success && (
-            <p data-testid="success-message" className="font-bold text-green-600">
+            <p
+              data-testid="success-message"
+              className="font-bold text-green-600"
+            >
               Mensagem enviada com sucesso!
             </p>
           )}
