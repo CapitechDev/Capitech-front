@@ -19,7 +19,10 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'  # Alterado para Node.js 16
+
+      - name: Verificar versão do Node.js
+        run: node -v  # Verifica a versão do Node.js
 
       - name: Instalar dependências
         run: npm install
