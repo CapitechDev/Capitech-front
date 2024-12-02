@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { getTrail } from "./utils";
 
 import UpdateTrailTemplate from "@/components/UI/templates/updateTrailTemplate";
@@ -14,12 +16,7 @@ export default async function UpdateTrailPage({
   const trail = await getTrail(id);
 
   if (!trail) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
+    return redirect("/admin");
   }
 
   return <UpdateTrailTemplate trail={trail} />;
