@@ -25,7 +25,7 @@ describe("AdminCreateTrail Page", () => {
 
     expect(screen.getByLabelText("Nome")).toBeInTheDocument();
     expect(screen.getByLabelText("Tema")).toBeInTheDocument();
-    expect(screen.getByLabelText("Conteúdo")).toBeInTheDocument();
+    expect(screen.getByLabelText("Conteúdo da Trilha")).toBeInTheDocument();
     expect(screen.getByLabelText("Título do Vídeo")).toBeInTheDocument();
     expect(screen.getByLabelText("Descrição do Vídeo")).toBeInTheDocument();
     expect(screen.getByLabelText("Referências do Vídeo")).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
@@ -85,7 +85,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
@@ -121,7 +121,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
