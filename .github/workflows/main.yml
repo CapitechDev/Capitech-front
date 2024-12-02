@@ -24,6 +24,9 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Test
+        run: npm run test
+
       - name: Instalar semver
         run: npm install -g semver
 

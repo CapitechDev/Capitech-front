@@ -24,7 +24,6 @@ export default function AdminCreateTrail() {
     },
     validationSchema: createTrailSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const response = await api.post("/trilhas", values);
 
