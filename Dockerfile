@@ -1,29 +1,23 @@
-# Usar uma imagem base do Node.js
-FROM node:18.17.0-alpine
+# Usando a imagem oficial do Node.js
+FROM node:18
 
-# Definir o diretório de trabalho
+# Definindo o diretório de trabalho
 WORKDIR /app
 
-# Copiar o package.json e o package-lock.json
+# Copiando arquivos de dependências primeiro
 COPY package*.json ./
 
-# Limpar o cache do npm
-RUN npm cache clean --force
+# Instalando dependências
+RUN npm install --legacy-peer-deps
 
-# Instalar as dependências
-RUN npm install
-
-# Copiar o restante do código da aplicação
+# Copiando os arquivos do projeto
 COPY . .
 
-# Instalar dependências de construção
-RUN npm install --only=dev
-
-# Construir a aplicação
+# Build do projeto
 RUN npm run build
 
-# Expor a porta que a aplicação irá rodar
+# Expondo a porta do servidor
 EXPOSE 3000
 
-# Comando para rodar a aplicação
+# Comando para rodar o servidor de produção
 CMD ["npm", "start"]
