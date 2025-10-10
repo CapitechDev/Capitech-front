@@ -1,5 +1,5 @@
 export interface IUpdateTrail {
-  _id: string;
+  id: string;
   description: string;
   video_description: string;
   name: string;
