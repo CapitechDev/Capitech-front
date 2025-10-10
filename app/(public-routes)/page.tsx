@@ -1,46 +1,14 @@
-"use client";
-
 import { Button } from "@nextui-org/button";
 import { FaArrowRight } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { Link } from "@nextui-org/link";
-import { Card, CardBody } from "@nextui-org/card";
-import { Spinner } from "@nextui-org/spinner";
 
 import HomeCardContent from "@/components/UI/molecules/homeCardContent";
 import HomeCardFrames from "@/components/UI/molecules/homeCardFrame";
-import api from "@/services/axios";
-import { HomeTrailImage } from "@/components/UI/atoms/homeTrailImage";
+import TrailsSection from "@/components/UI/organisms/trailsSection";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/UI/atoms/loading";
 
 export default function Home() {
-  const [trails, setTrails] = useState<
-    {
-      _id: string;
-      name: string;
-      subtitle: string;
-    }[]
-  >([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get("/trilhas");
-
-        if (res.status === 200) {
-          setTrails(res.data.data);
-        }
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const homeFrames = [
     {
       img: "/assets/home/academico.png",
@@ -161,34 +129,9 @@ export default function Home() {
             Escolha uma tecnologia para começar sua jornada!
           </h2>
 
-          {error ? (
-            <p className="text-center">Erro ao carregar trilhas: {error}</p>
-          ) : loading ? (
-            <div className="w-full flex gap-2 items-center justify-center">
-              <p>Carregando trilhas</p>
-              <Spinner color="white" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              {trails.map((trail) => (
-                <Card key={trail._id}>
-                  <CardBody className="overflow-visible py-2 flex flex-col justify-between items-center bg-capi_gray_login p-5">
-                    <HomeTrailImage trailName={trail.name} />
-                    <div className="text-center">
-                      <p className="text-3xl font-headline text-white font-bold transition duration-300 mb-2 hover:text-gray-200">
-                        {trail.name}
-                      </p>
-                      <Link href={`trilhas/${trail._id}`}>
-                        <p className="text-center text-xl font-headline text-white font-bold underline transition duration-300 hover:text-gray-200">
-                          {trail.subtitle}
-                        </p>
-                      </Link>
-                    </div>
-                  </CardBody>
-                </Card>
-              ))}
-            </div>
-          )}
+          <Suspense fallback={<LoadingSpinner text="Carregando trilhas" />}>
+            <TrailsSection />
+          </Suspense>
         </div>
       </section>
     </>
