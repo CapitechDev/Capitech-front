@@ -24,7 +24,7 @@ export default function AdminProfilePage() {
 
   const formik = useFormik<Partial<IEditUser>>({
     initialValues: {
-      _id: "",
+      id: "",
       email: "",
       name: "",
       password: "",
@@ -32,13 +32,13 @@ export default function AdminProfilePage() {
     validationSchema: updateUserSchema,
     onSubmit: async (values) => {
       try {
-        const { _id, ...userData } = values;
+        const { id, ...userData } = values;
 
         if (userData.password === "") {
           delete userData.password;
         }
 
-        const response = await api.put(`/user/${_id}`, userData);
+        const response = await api.put(`/user/${id}`, userData);
 
         if (response.data.success) {
           signOut();
@@ -58,7 +58,7 @@ export default function AdminProfilePage() {
   useEffect(() => {
     if (data) {
       formik.setValues({
-        _id: data.user._id,
+        id: data.user.id,
         email: data.user.email,
         name: data.user.name,
         password: "",

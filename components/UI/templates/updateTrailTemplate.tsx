@@ -23,9 +23,9 @@ export default function UpdateTrailTemplate({
     validationSchema: updateTrailSchema,
     onSubmit: async (values) => {
       try {
-        const { _id, ...updatedTrail } = values;
+        const { id, ...updatedTrail } = values;
 
-        const response = await api.put(`/trilhas/${_id}`, updatedTrail);
+        const response = await api.put(`/trilhas/${id}`, updatedTrail);
 
         if (response.data.success) {
           return showSuccessToast(response.data.message, "/admin");
