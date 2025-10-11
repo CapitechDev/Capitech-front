@@ -8,6 +8,8 @@ import { ICreateTrail } from "@/types/Trail";
 import api from "@/services/axios";
 import useToast from "@/hooks/useToast";
 import { createTrailSchema } from "@/validations/trail.schema";
+import { MarkdownEditor } from "@/components/UI/molecules/managePostForm";
+import { revalidateTag } from "next/cache";
 
 export default function AdminCreateTrail() {
   const { showSuccessToast, showErrorToast } = useToast();
@@ -25,9 +27,13 @@ export default function AdminCreateTrail() {
     validationSchema: createTrailSchema,
     onSubmit: async (values) => {
       try {
-        const response = await api.post("/trilhas", values);
+        console.log({values})
+        const response = await api.post("/trails", values);
 
-        if (response.data.success) {
+        console.log({response})
+
+        if (response.status === 201) {
+          revalidateTag("trails")
           return showSuccessToast(response.data.message, "/admin");
         } else {
           showErrorToast(response.data.message);
@@ -78,26 +84,16 @@ export default function AdminCreateTrail() {
             onChange={formik.handleChange}
           />
 
-          <Textarea
-            disableAutosize
-            classNames={{
-              base: "w-full",
-              input: "resize-y min-h-[200px]",
-            }}
-            errorMessage={
-              formik.touched.description && formik.errors.description
-            }
-            isInvalid={
-              formik.touched.description && !!formik.errors.description
-            }
-            label="Conteúdo da Trilha"
-            labelPlacement="outside"
-            name="description"
-            placeholder="Digite o conteúdo"
+          <MarkdownEditor
+            labelText="Conteúdo"
+            disabled={false}
+            textAreaName="description"
             value={formik.values.description}
-            variant="faded"
-            onChange={formik.handleChange}
+            setValue={(value) => formik.setFieldValue('description', value)}
+            errorMessage={formik.touched.description ? formik.errors.description : undefined}
+            isInvalid={formik.touched.description && !!formik.errors.description}
           />
+
           <Input
             color="default"
             errorMessage={
