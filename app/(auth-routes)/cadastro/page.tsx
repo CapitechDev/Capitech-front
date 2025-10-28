@@ -25,7 +25,7 @@ export default function Register() {
     validationSchema: userSchema,
     onSubmit: async (values) => {
       try {
-        const response = await api.post("/cadastro", values);
+        const response = await api.post("/users", values);
 
         if (response.data.success) {
           return showSuccessToast(response.data.message, "/login");

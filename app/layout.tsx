@@ -7,7 +7,6 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
 import Header from "@/components/UI/organisms/header";
 import Footer from "@/components/UI/organisms/footer";
 
@@ -35,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="en" data-color-mode={"light"}>
       <head />
       <body
         className={clsx(
