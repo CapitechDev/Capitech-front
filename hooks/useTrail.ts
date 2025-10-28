@@ -1,4 +1,4 @@
-import { getTrails } from "@/services/plan";
+import { getTrails } from "@/services/trails";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import useToast from "./useToast";

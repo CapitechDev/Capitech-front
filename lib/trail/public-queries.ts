@@ -1,3 +1,4 @@
+import { apiFetchJson } from "@/services/apiFetch";
 import { cache } from "react";
 
 export async function asyncDelay(milliseconds = 0, verbose = false) {
@@ -8,13 +9,11 @@ export async function asyncDelay(milliseconds = 0, verbose = false) {
 
 export const findAllPublicTrailsCached = cache(async () => {
   try {
-    const res = await fetch("http://localhost:4000/trails", {
+    const trailsResponse = await apiFetchJson('/trails', {
       next: {
         tags: ["trails"],
       },
     });
-
-    const trailsResponse = await res.json();
     return trailsResponse.data;
   } catch (error) {
     return null
@@ -23,13 +22,11 @@ export const findAllPublicTrailsCached = cache(async () => {
 
 export const findOnePublicTrailCached = cache(async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:4000/trails/${id}`, {
+    const trailsResponse = await apiFetchJson(`/trails/${id}`, {
       next: {
         tags: [`trails-${id}`],
       },
     });
-
-    const trailsResponse = await res.json();
     return trailsResponse;
   } catch (error) {
     return null
