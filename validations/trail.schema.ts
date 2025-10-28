@@ -32,7 +32,7 @@ const createTrailSchema: ObjectSchema<ICreateTrail> = object().shape({
 });
 
 const updateTrailSchema: ObjectSchema<IUpdateTrail> = object().shape({
-  _id: string().required("O ID da trilha é obrigatório"),
+  id: string().required("O ID da trilha é obrigatório"),
   name: string()
     .required("O nome da trilha é obrigatório")
     .min(3, "O nome deve ter pelo menos 3 caracteres")

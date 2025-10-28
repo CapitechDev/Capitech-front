@@ -5,14 +5,12 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { ICreateTrail } from "@/types/Trail";
-import api from "@/services/axios";
-import useToast from "@/hooks/useToast";
 import { createTrailSchema } from "@/validations/trail.schema";
 import { MarkdownEditor } from "@/components/UI/molecules/managePostForm";
-import { revalidateTag } from "next/cache";
+import { useTrail } from "@/hooks/useTrail";
 
 export default function AdminCreateTrail() {
-  const { showSuccessToast, showErrorToast } = useToast();
+  const { createTrailMutation } = useTrail();
 
   const formik = useFormik<ICreateTrail>({
     initialValues: {
@@ -27,19 +25,9 @@ export default function AdminCreateTrail() {
     validationSchema: createTrailSchema,
     onSubmit: async (values) => {
       try {
-        console.log({values})
-        const response = await api.post("/trails", values);
-
-        console.log({response})
-
-        if (response.status === 201) {
-          revalidateTag("trails")
-          return showSuccessToast(response.data.message, "/admin");
-        } else {
-          showErrorToast(response.data.message);
-        }
+        await createTrailMutation(values);
       } catch (error: any) {
-        showErrorToast(`Erro ao criar usuário.`);
+        console.log(error.message);
       }
     },
   });
@@ -89,9 +77,13 @@ export default function AdminCreateTrail() {
             disabled={false}
             textAreaName="description"
             value={formik.values.description}
-            setValue={(value) => formik.setFieldValue('description', value)}
-            errorMessage={formik.touched.description ? formik.errors.description : undefined}
-            isInvalid={formik.touched.description && !!formik.errors.description}
+            setValue={(value) => formik.setFieldValue("description", value)}
+            errorMessage={
+              formik.touched.description ? formik.errors.description : undefined
+            }
+            isInvalid={
+              formik.touched.description && !!formik.errors.description
+            }
           />
 
           <Input
