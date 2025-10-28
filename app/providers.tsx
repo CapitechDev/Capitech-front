@@ -9,6 +9,9 @@ import { Bounce, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -21,7 +24,11 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </SessionProvider>
       </NextThemesProvider>
       <ToastContainer
         closeOnClick
