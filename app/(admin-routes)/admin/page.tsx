@@ -30,7 +30,7 @@ const columns = [
     label: "id",
   },
   {
-    key: "name",
+    key: "subtitle",
     label: "Nome",
   },
   {

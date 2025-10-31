@@ -34,21 +34,19 @@ export default function AdminProfilePage() {
       try {
         const { id, ...userData } = values;
 
+        console.log({ userData });
+
         if (userData.password === "") {
           delete userData.password;
         }
 
-        const response = await api.put(`/user/${id}`, userData);
+        await api.put(`/users/${id}`, userData);
 
-        if (response.data.success) {
-          signOut();
+        signOut();
 
-          return showSuccessToast(
-            `${response.data.message}! Faça login novamente.`
-          );
-        } else {
-          showErrorToast(response.data.message);
-        }
+        return showSuccessToast(
+          `Usuário atualizado com sucesso! Faça login novamente.`
+        );
       } catch (error: any) {
         return showErrorToast(`Erro ao atualizar usuário.`);
       }
