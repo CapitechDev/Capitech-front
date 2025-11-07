@@ -1,5 +1,5 @@
 # Usando a imagem oficial do Node.js
-FROM node:18
+FROM node:22
 
 # Definindo o diretório de trabalho
 WORKDIR /app
@@ -8,16 +8,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalando dependências
-RUN npm install --legacy-peer-deps
+RUN yarn install
 
 # Copiando os arquivos do projeto
 COPY . .
 
 # Build do projeto
-RUN npm run build
+RUN yarn build
 
 # Expondo a porta do servidor
 EXPOSE 3000
 
 # Comando para rodar o servidor de produção
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
