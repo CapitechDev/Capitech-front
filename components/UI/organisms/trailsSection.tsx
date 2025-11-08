@@ -9,7 +9,7 @@ export default async function TrailsSection() {
   console.log({trailsResponse})
 
   if (!trailsResponse) {
-    return <p className="text-center">Erro ao buscar trilhas.</p>;
+    return <img src="/assets/home/trails-notfound.png" alt="Trilha não encontrada" className="mx-auto mb-8 w-80 h-80 object-contain" />;
   }
 
   return (

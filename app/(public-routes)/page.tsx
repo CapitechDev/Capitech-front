@@ -9,7 +9,6 @@ import { Suspense } from "react";
 import LoadingSpinner from "@/components/UI/atoms/loading";
 import { hr } from "@uiw/react-md-editor";
 
-// alteração dos cards para que levem a rota correta
 export default function Home() {
   const homeFrames = [
     {
@@ -130,10 +129,9 @@ export default function Home() {
         </div>
       </main>
 
-  {/* criar link para seção de trilhas na home */}
   <section id="trilhas" className="bg-capi_gray_home_darker w-full px-4 py-10">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="font-headline text-black text-2xl font-semibold text-center mb-8">
+          <h2 className="font-headline text-white text-2xl font-semibold text-center mb-8">
             Escolha uma tecnologia para começar sua jornada!
           </h2>
 
