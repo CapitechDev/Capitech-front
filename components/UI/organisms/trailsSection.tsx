@@ -15,9 +15,16 @@ export default async function TrailsSection() {
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
       {trailsResponse.map((trail: any) => (
-        <Card key={trail.id}>
+        // usa `group` para efeitos de hover e transição suave
+        <Card
+          key={trail.id}
+          className="group transition-transform duration-200 ease-out hover:-translate-y-1 transform"
+        >
           <CardBody className="overflow-visible py-2 flex flex-col justify-between items-center bg-capi_gray_login p-5">
-            <HomeTrailImage trailName={trail.name} />
+            <HomeTrailImage
+              trailName={trail.name}
+              className="transition-transform duration-200 ease-out group-hover:scale-105"
+            />
             <div className="text-center">
               <p className="text-3xl font-headline text-white font-bold transition duration-300 mb-2 hover:text-gray-200">
                 {trail.name}

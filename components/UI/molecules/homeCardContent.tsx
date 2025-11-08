@@ -34,12 +34,15 @@ export default function HomeCardContent({
     // </div>
     // </div>
 
-    <Card className={` ${bgColor}`}>
+    // usa `group` para permitir hover nos filhos (imagem/efeitos)
+    <Card className={` ${bgColor} group transition-transform duration-200 ease-out hover:-translate-y-1 transform` }>
       <CardBody
-        className={`overflow-visible text-black flex flex-col gap-5 w-full min-h-64 ${bgColor} p-3 rounded-lg ${flexRowReverse ? "md:flex-row-reverse" : "md:flex-row"}`}
+        className={`overflow-visible text-black flex flex-col gap-5 w-full min-h-64 ${bgColor} p-3 rounded-lg ${
+          flexRowReverse ? "md:flex-row-reverse" : "md:flex-row"
+        }`}
       >
         <div className="basis-2/6 flex items-center justify-center">
-          <Image className="w-full" src={img} />
+          <Image className="w-full transition-transform duration-200 ease-out group-hover:scale-105" src={img} />
         </div>
         <div className="basis-4/6 flex flex-col justify-center">
           <h2 className="font-headline font-semibold text-2xl text-center mb-5 md:text-left">
