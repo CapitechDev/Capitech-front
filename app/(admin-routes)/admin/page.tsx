@@ -17,12 +17,10 @@ import {
   DropdownTrigger,
   Link,
 } from "@nextui-org/react";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { FaRegEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
 
 import { IUpdateTrail } from "@/types/Trail";
 import { useTrail } from "@/hooks/useTrail";
+import { EllipsisIcon, SquarePenIcon, TrashIcon } from "lucide-react";
 
 const columns = [
   {
@@ -61,7 +59,7 @@ export default function Admin() {
               <Dropdown>
                 <DropdownTrigger>
                   <Button isIconOnly size="sm" variant="light">
-                    <HiOutlineDotsHorizontal size={20} />
+                    <EllipsisIcon size={20} />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
@@ -71,7 +69,7 @@ export default function Admin() {
                       className="flex gap-1 items-center justify-center text-black"
                     >
                       <span>Editar</span>
-                      <FaRegEdit />
+                      <SquarePenIcon />
                     </Link>
                   </DropdownItem>
                   <DropdownItem
@@ -80,7 +78,7 @@ export default function Admin() {
                   >
                     <div className="flex gap-1 items-center justify-center text-medium">
                       <span>Deletar</span>
-                      <MdDeleteOutline />
+                      <TrashIcon />
                     </div>
                   </DropdownItem>
                 </DropdownMenu>

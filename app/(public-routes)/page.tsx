@@ -1,5 +1,4 @@
 import { Button } from "@nextui-org/button";
-import { FaArrowRight } from "react-icons/fa";
 import { Link } from "@nextui-org/link";
 
 import HomeCardContent from "@/components/UI/molecules/homeCardContent";
@@ -7,6 +6,7 @@ import HomeCardFrames from "@/components/UI/molecules/homeCardFrame";
 import TrailsSection from "@/components/UI/organisms/trailsSection";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/UI/atoms/loading";
+import { ArrowRightIcon } from "lucide-react";
 
 export default function Home() {
   const homeFrames = [
@@ -119,7 +119,7 @@ export default function Home() {
             href="/vestibular"
           >
             <span>Conheça a FATEC</span>
-            <FaArrowRight />
+            <ArrowRightIcon />
           </Button>
         </div>
       </main>
