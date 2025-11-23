@@ -8,16 +8,22 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalando dependências
-RUN npm install --legacy-peer-deps
+RUN yarn install
 
 # Copiando os arquivos do projeto
 COPY . .
 
 # Build do projeto
-RUN npm run build
+RUN yarn build
+
+RUN yarn cache clean
 
 # Expondo a porta do servidor
-EXPOSE 3000
+ARG PORT
+
+ENV PORT=${PORT}
+
+EXPOSE ${PORT}
 
 # Comando para rodar o servidor de produção
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
