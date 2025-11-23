@@ -26,7 +26,9 @@ jobs:
 
       - name: Extract repository name
         id: repo-name
-        run: echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        run: |
+          echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)" >> $GITHUB_ENV
+          echo "REPO_NAME_LOWERCASE=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
       
       - name: Set environment variables for production
         if: github.ref_name == 'main'
@@ -43,19 +45,19 @@ jobs:
             cd capitech/${{ env.REPO_NAME }}
             git pull https://${{ secrets.GIT_TOKEN }}@github.com/CapitechDev/${{ env.REPO_NAME }}.git ${{ github.ref_name }}
 
-            docker stop ${{ env.REPO_NAME }} || true
-            docker rm ${{ env.REPO_NAME }} || true
-            docker rmi ${{ env.REPO_NAME }}:${{ env.APP_PORT }} || true
+            docker stop ${{ env.REPO_NAME_LOWERCASE }} || true
+            docker rm ${{ env.REPO_NAME_LOWERCASE }} || true
+            docker rmi ${{ env.REPO_NAME_LOWERCASE }}:${{ env.APP_PORT }} || true
 
             echo "🐳 Buildando nova imagemI..."
-            docker build --no-cache -t ${{ env.REPO_NAME }}:${{ env.APP_PORT }} .
+            docker build --no-cache -t ${{ env.REPO_NAME_LOWERCASE }}:${{ env.APP_PORT }} .
 
             echo "🚀 Subindo novo container"
             docker run -d \
-              --name ${{ env.REPO_NAME }} \
+              --name ${{ env.REPO_NAME_LOWERCASE }} \
               -e TZ=America/Sao_Paulo \
               -v /etc/localtime:/etc/localtime:ro \
               -v /etc/timezone:/etc/timezone:ro \
               -p ${{ env.APP_PORT }}:${{ env.APP_PORT }} \
               --restart always \
-              ${{ env.REPO_NAME }}:${{ env.APP_PORT }}
+              ${{ env.REPO_NAME_LOWERCASE }}:${{ env.APP_PORT }}
