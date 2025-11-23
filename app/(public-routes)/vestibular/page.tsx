@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
-import { FaMapMarkerAlt, FaExternalLinkAlt, FaRoute } from "react-icons/fa";
+import { ExternalLinkIcon, RouteIcon } from "lucide-react";
 
 export default function Vestibular() {
   return (
@@ -136,7 +136,7 @@ function MapEmbed() {
           className="inline-flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-white"
           aria-label="Abrir no OpenStreetMap"
         >
-          <FaExternalLinkAlt className="text-sm" />
+          <ExternalLinkIcon className="w-3.5 h-3.5" />
           OSM
         </a>
 
@@ -147,7 +147,7 @@ function MapEmbed() {
           className="inline-flex items-center gap-2 px-3 py-2 bg-capi_green text-white rounded-lg shadow-sm text-xs font-medium hover:bg-capi_green/90"
           aria-label="Traçar rota"
         >
-          <FaRoute className="text-sm" />
+          <RouteIcon className="w-3.5 h-3.5" />
           Rota
         </a>
 
