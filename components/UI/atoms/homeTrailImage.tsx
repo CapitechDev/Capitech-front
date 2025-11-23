@@ -2,9 +2,10 @@ import { Image } from "@nextui-org/image";
 
 interface IHomeTrailImageProps {
   trailName: string;
+  className?: string;
 }
 
-export const HomeTrailImage = ({ trailName }: IHomeTrailImageProps) => {
+export const HomeTrailImage = ({ trailName, className = "" }: IHomeTrailImageProps) => {
   const chooseImage = (name: string) => {
     switch (name.toLowerCase()) {
       case "html5":
@@ -24,7 +25,7 @@ export const HomeTrailImage = ({ trailName }: IHomeTrailImageProps) => {
 
   return (
     <>
-      <Image className="mb-2" src={chooseImage(trailName)} width={160} />
+      <Image className={"mb-2 " + className} src={chooseImage(trailName)} width={160} />
     </>
   );
 };

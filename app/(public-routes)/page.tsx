@@ -7,10 +7,12 @@ import TrailsSection from "@/components/UI/organisms/trailsSection";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/UI/atoms/loading";
 import { ArrowRightIcon } from "lucide-react";
+import { hr } from "@uiw/react-md-editor";
 
 export default function Home() {
   const homeFrames = [
     {
+      href: "#trilhas",
       img: "/assets/home/academico.png",
       title: "Trilhas de aprendizagem",
       content:
@@ -18,6 +20,7 @@ export default function Home() {
       color: "bg-capi_green",
     },
     {
+      href: "/login",
       img: "/assets/home/chat-de-video.png",
       title: "Seu Desenvolvimento",
       content:
@@ -25,6 +28,7 @@ export default function Home() {
       color: "bg-capi_blue",
     },
     {
+      href: "/vestibular",
       img: "/assets/home/trilha.png",
       title: "Vestibular FATEC",
       content:
@@ -91,6 +95,7 @@ export default function Home() {
           {homeFrames.map((frame, i) => (
             <HomeCardFrames
               key={`frame-${i}`}
+              href={frame.href}
               color={frame.color}
               content={frame.content}
               img={frame.img}
@@ -109,7 +114,7 @@ export default function Home() {
               title={content.title}
             />
           ))}
-        </section>
+        </section> 
 
         <div className="mt-10 mb-8 flex justify-center items-center">
           <Button
@@ -123,9 +128,10 @@ export default function Home() {
           </Button>
         </div>
       </main>
-      <section className="bg-capi_gray_home_darker w-full px-4 py-10">
+
+  <section id="trilhas" className="bg-capi_gray_home_darker w-full px-4 py-10">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="font-headline text-black text-2xl font-semibold text-center mb-8">
+          <h2 className="font-headline text-white text-2xl font-semibold text-center mb-8">
             Escolha uma tecnologia para começar sua jornada!
           </h2>
 
