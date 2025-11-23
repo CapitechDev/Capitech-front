@@ -11,8 +11,8 @@ export async function updateTrailAction(id: string,data: Omit<IUpdateTrail, "id"
       body: JSON.stringify(data),
     });
 
-    revalidateTag("trails");
-    revalidateTag(`trails-${id}`);
+    // revalidateTag("trails");
+    // revalidateTag(`trails-${id}`);
 
     return result;
   } catch (error) {
