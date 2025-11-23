@@ -3,9 +3,8 @@
 import emailjs from "@emailjs/browser";
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
+import { CircleCheckIcon, LoaderCircleIcon } from "lucide-react";
 import { useRef, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
-import { HiCheckCircle } from "react-icons/hi";
 
 export default function Contact() {
   const [loading, setLoading] = useState(false);
@@ -143,9 +142,9 @@ export default function Contact() {
             disabled={loading}
           >
             {loading ? (
-              <FaSpinner className="h-4 w-4 animate-spin" />
+              <LoaderCircleIcon className="h-4 w-4 animate-spin" />
             ) : success ? (
-              <HiCheckCircle className="h-4 w-4 text-green-500" />
+              <CircleCheckIcon className="h-4 w-4 text-green-500" />
             ) : (
               "Enviar"
             )}

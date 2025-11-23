@@ -1,14 +1,16 @@
-import { Suspense } from "react";
+import { Suspense, use } from "react";
 import SingleTrailTemplate from "@/components/UI/templates/singleTrailTemplate";
 import LoadingSpinner from "@/components/UI/atoms/loading";
 
 interface ITrailsProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function Trails({ params: { id } }: ITrailsProps) {
+export default function Trails({ params }: ITrailsProps) {
+  const { id } = use(params);
+  
   return (
     <Suspense
       fallback={

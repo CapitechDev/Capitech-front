@@ -16,8 +16,14 @@ COPY . .
 # Build do projeto
 RUN yarn build
 
+RUN yarn cache clean
+
 # Expondo a porta do servidor
-EXPOSE 3000
+ARG PORT
+
+ENV PORT=${PORT}
+
+EXPOSE ${PORT}
 
 # Comando para rodar o servidor de produção
 CMD ["yarn", "start"]

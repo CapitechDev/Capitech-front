@@ -3,13 +3,12 @@
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { IoMenu } from "react-icons/io5";
 import { Image } from "@nextui-org/image";
 import { usePathname } from "next/navigation";
-import { IoLogOutOutline } from "react-icons/io5";
 import { signOut, useSession } from "next-auth/react";
 
 import HeaderModal from "../molecules/headerModal";
+import { LogOutIcon, MenuIcon } from "lucide-react";
 
 export default function Header() {
   const path = usePathname();
@@ -39,7 +38,7 @@ export default function Header() {
           color="default"
           onPress={showAndCloseModal}
         >
-          <IoMenu size={20} />
+          <MenuIcon size={20} />
         </Button>
 
         {showSignOutButton && (
@@ -49,7 +48,7 @@ export default function Header() {
             color="default"
             onPress={() => signOut()}
           >
-            <IoLogOutOutline size={20} />
+            <LogOutIcon size={20} />
           </Button>
         )}
       </div>
