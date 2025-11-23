@@ -5,9 +5,9 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { IUpdateTrail } from "@/types/Trail";
-import api from "@/services/axios";
-import useToast from "@/hooks/useToast";
 import { updateTrailSchema } from "@/validations/trail.schema";
+import { MarkdownEditor } from "../molecules/managePostForm";
+import { useTrail } from "@/hooks/useTrail";
 
 interface IUpdateTrailTemplateProps {
   trail: IUpdateTrail;
@@ -16,24 +16,18 @@ interface IUpdateTrailTemplateProps {
 export default function UpdateTrailTemplate({
   trail,
 }: IUpdateTrailTemplateProps) {
-  const { showSuccessToast, showErrorToast } = useToast();
+  const { updateTrailMutation } = useTrail();
 
   const formik = useFormik<IUpdateTrail>({
     initialValues: trail,
     validationSchema: updateTrailSchema,
     onSubmit: async (values) => {
+      console.log("Enviando")
       try {
-        const { _id, ...updatedTrail } = values;
-
-        const response = await api.put(`/trilhas/${_id}`, updatedTrail);
-
-        if (response.data.success) {
-          return showSuccessToast(response.data.message, "/admin");
-        } else {
-          showErrorToast(response.data.message);
-        }
+        const { id, ...updatedTrail } = values;
+        await updateTrailMutation({id, data: updatedTrail});
       } catch (error: any) {
-        showErrorToast(`Erro ao criar usuário.`);
+        console.log(error.message);
       }
     },
   });
@@ -42,7 +36,7 @@ export default function UpdateTrailTemplate({
     <main>
       <section className="container mx-auto max-w-5xl p-10 px-2">
         <h2 className="text-center font-headline font-semibold text-2xl">
-          Cadastrar nova trilha:
+          Atualizar trilha:
         </h2>
         <form
           className="mt-12 flex flex-col items-center gap-8"
@@ -78,26 +72,20 @@ export default function UpdateTrailTemplate({
             onChange={formik.handleChange}
           />
 
-          <Textarea
-            disableAutosize
-            classNames={{
-              base: "w-full",
-              input: "resize-y min-h-[200px]",
-            }}
+          <MarkdownEditor
+            labelText="Conteúdo"
+            disabled={false}
+            textAreaName="description"
+            value={formik.values.description}
+            setValue={(value) => formik.setFieldValue("description", value)}
             errorMessage={
-              formik.touched.description && formik.errors.description
+              formik.touched.description ? formik.errors.description : undefined
             }
             isInvalid={
               formik.touched.description && !!formik.errors.description
             }
-            label="Conteúdo da Trilha"
-            labelPlacement="outside"
-            name="description"
-            placeholder="Digite o conteúdo"
-            value={formik.values.description}
-            variant="faded"
-            onChange={formik.handleChange}
           />
+
           <Input
             color="default"
             errorMessage={

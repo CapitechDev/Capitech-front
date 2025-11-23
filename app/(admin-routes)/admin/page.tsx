@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import {
   Button,
   Dropdown,
@@ -21,17 +21,16 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 
-import api from "@/services/axios";
 import { IUpdateTrail } from "@/types/Trail";
-import useToast from "@/hooks/useToast";
+import { useTrail } from "@/hooks/useTrail";
 
 const columns = [
   {
-    key: "_id",
+    key: "id",
     label: "id",
   },
   {
-    key: "name",
+    key: "subtitle",
     label: "Nome",
   },
   {
@@ -41,36 +40,13 @@ const columns = [
 ];
 
 export default function Admin() {
-  const [trails, setTrails] = useState<IUpdateTrail[]>([]);
-
-  const { showSuccessToast, showErrorToast } = useToast();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const trails = await api.get("/trilhas");
-
-      setTrails(trails.data.data);
-    } catch (error: any) {
-      console.error(`Erro ao buscar trilhas: ${error.message}`);
-    }
-  };
+  const { trails, deleteTrailMutation } = useTrail();
 
   const deleteTrail = async (id: string) => {
     try {
-      const result = await api.delete(`/trilhas/${id}`);
-
-      if (result.data.success) {
-        showSuccessToast(result.data.message);
-        await fetchData();
-      } else {
-        showErrorToast(result.data.message);
-      }
+      await deleteTrailMutation(id)
     } catch (error: any) {
-      showErrorToast(error.message);
+      console.log(error.message)
     }
   };
 
@@ -89,9 +65,9 @@ export default function Admin() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem key={`edit_${trail._id}`}>
+                  <DropdownItem key={`edit_${trail.id}`}>
                     <Link
-                      href={`/admin/trilhas/atualizar/${trail._id}`}
+                      href={`/admin/trilhas/atualizar/${trail.id}`}
                       className="flex gap-1 items-center justify-center text-black"
                     >
                       <span>Editar</span>
@@ -99,8 +75,8 @@ export default function Admin() {
                     </Link>
                   </DropdownItem>
                   <DropdownItem
-                    key={`delete_${trail._id}`}
-                    onClick={() => deleteTrail(trail._id)}
+                    key={`delete_${trail.id}`}
+                    onClick={() => deleteTrail(String(trail.id))}
                   >
                     <div className="flex gap-1 items-center justify-center text-medium">
                       <span>Deletar</span>
@@ -131,9 +107,12 @@ export default function Admin() {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"Nenhuma trilha cadastrada."} items={trails}>
+        <TableBody
+          emptyContent={"Nenhuma trilha cadastrada."}
+          items={trails || []}
+        >
           {(item) => (
-            <TableRow key={item._id}>
+            <TableRow key={item.id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

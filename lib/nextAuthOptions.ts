@@ -14,15 +14,21 @@ export const nextAuthOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         if (!credentials) return null;
 
-        const response = await api.post("/login", credentials);
+        try {
+          const response = await api.post("/auth/login", credentials);
+          const userData = await response.data;
+          console.log("userData", userData);
+          console.log("response", response.status);
 
-        const userData = await response.data.data;
+          if (userData && response.status === 200) {
+            return userData;
+          }
 
-        if (userData && response.status === 200) {
-          return userData;
+          return null;
+        } catch (error) {
+          console.error("❌ Auth error:", error);
+          return null;
         }
-
-        return null;
       },
     }),
   ],
@@ -31,13 +37,15 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      user && (token.user = user);
-
+      if (user) {
+        token.user = user;
+      }
       return token;
     },
     async session({ session, token }) {
-      session = token.user as any;
-
+      if (token?.user) {
+        session = token.user as any;
+      }
       return session;
     },
   },

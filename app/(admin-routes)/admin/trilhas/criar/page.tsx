@@ -5,12 +5,12 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { ICreateTrail } from "@/types/Trail";
-import api from "@/services/axios";
-import useToast from "@/hooks/useToast";
 import { createTrailSchema } from "@/validations/trail.schema";
+import { MarkdownEditor } from "@/components/UI/molecules/managePostForm";
+import { useTrail } from "@/hooks/useTrail";
 
 export default function AdminCreateTrail() {
-  const { showSuccessToast, showErrorToast } = useToast();
+  const { createTrailMutation } = useTrail();
 
   const formik = useFormik<ICreateTrail>({
     initialValues: {
@@ -25,15 +25,9 @@ export default function AdminCreateTrail() {
     validationSchema: createTrailSchema,
     onSubmit: async (values) => {
       try {
-        const response = await api.post("/trilhas", values);
-
-        if (response.data.success) {
-          return showSuccessToast(response.data.message, "/admin");
-        } else {
-          showErrorToast(response.data.message);
-        }
+        await createTrailMutation(values);
       } catch (error: any) {
-        showErrorToast(`Erro ao criar usuário.`);
+        console.log(error.message);
       }
     },
   });
@@ -78,26 +72,20 @@ export default function AdminCreateTrail() {
             onChange={formik.handleChange}
           />
 
-          <Textarea
-            disableAutosize
-            classNames={{
-              base: "w-full",
-              input: "resize-y min-h-[200px]",
-            }}
+          <MarkdownEditor
+            labelText="Conteúdo"
+            disabled={false}
+            textAreaName="description"
+            value={formik.values.description}
+            setValue={(value) => formik.setFieldValue("description", value)}
             errorMessage={
-              formik.touched.description && formik.errors.description
+              formik.touched.description ? formik.errors.description : undefined
             }
             isInvalid={
               formik.touched.description && !!formik.errors.description
             }
-            label="Conteúdo da Trilha"
-            labelPlacement="outside"
-            name="description"
-            placeholder="Digite o conteúdo"
-            value={formik.values.description}
-            variant="faded"
-            onChange={formik.handleChange}
           />
+
           <Input
             color="default"
             errorMessage={

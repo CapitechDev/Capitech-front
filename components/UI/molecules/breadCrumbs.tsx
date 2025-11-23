@@ -16,10 +16,6 @@ export default function AdminBreadcrumb() {
       text: "Nova trilha",
     },
     {
-      link: "/admin/desenvolvimento",
-      text: "Área de desenvolvimento",
-    },
-    {
       link: "/admin/perfil",
       text: "Usuário",
     },

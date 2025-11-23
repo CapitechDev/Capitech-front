@@ -24,7 +24,7 @@ export default function AdminProfilePage() {
 
   const formik = useFormik<Partial<IEditUser>>({
     initialValues: {
-      _id: "",
+      id: "",
       email: "",
       name: "",
       password: "",
@@ -32,23 +32,21 @@ export default function AdminProfilePage() {
     validationSchema: updateUserSchema,
     onSubmit: async (values) => {
       try {
-        const { _id, ...userData } = values;
+        const { id, ...userData } = values;
+
+        console.log({ userData });
 
         if (userData.password === "") {
           delete userData.password;
         }
 
-        const response = await api.put(`/user/${_id}`, userData);
+        await api.put(`/users/${id}`, userData);
 
-        if (response.data.success) {
-          signOut();
+        signOut();
 
-          return showSuccessToast(
-            `${response.data.message}! Faça login novamente.`
-          );
-        } else {
-          showErrorToast(response.data.message);
-        }
+        return showSuccessToast(
+          `Usuário atualizado com sucesso! Faça login novamente.`
+        );
       } catch (error: any) {
         return showErrorToast(`Erro ao atualizar usuário.`);
       }
@@ -58,7 +56,7 @@ export default function AdminProfilePage() {
   useEffect(() => {
     if (data) {
       formik.setValues({
-        _id: data.user._id,
+        id: data.user.id,
         email: data.user.email,
         name: data.user.name,
         password: "",
