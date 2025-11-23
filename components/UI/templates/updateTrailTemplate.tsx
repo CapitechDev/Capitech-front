@@ -22,7 +22,6 @@ export default function UpdateTrailTemplate({
     initialValues: trail,
     validationSchema: updateTrailSchema,
     onSubmit: async (values) => {
-      console.log("Enviando")
       try {
         const { id, ...updatedTrail } = values;
         await updateTrailMutation({id, data: updatedTrail});

@@ -34,8 +34,6 @@ export default function AdminProfilePage() {
       try {
         const { id, ...userData } = values;
 
-        console.log({ userData });
-
         if (userData.password === "") {
           delete userData.password;
         }

@@ -24,7 +24,6 @@ export const useTrail = () => {
         showSuccessToast("Trilha excluída com sucesso.");
       },
       onError: (error) => {
-        console.log("deu ruim");
         console.log(error.message);
         showErrorToast(error.message);
         throw error;

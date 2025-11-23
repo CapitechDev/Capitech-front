@@ -6,7 +6,6 @@ import { findAllPublicTrailsCached } from "@/lib/trail/public-queries";
 
 export default async function TrailsSection() {
   const trailsResponse = await findAllPublicTrailsCached();
-  console.log({trailsResponse})
 
   if (!trailsResponse) {
     return <img src="/assets/home/trails-notfound.png" alt="Trilha não encontrada" className="mx-auto mb-8 w-80 h-80 object-contain" />;
