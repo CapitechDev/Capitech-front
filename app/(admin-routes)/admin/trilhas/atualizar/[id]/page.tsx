@@ -5,14 +5,15 @@ import { getTrail } from "./utils";
 import UpdateTrailTemplate from "@/components/UI/templates/updateTrailTemplate";
 
 interface IUpdateTrailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function UpdateTrailPage({
-  params: { id },
+  params,
 }: IUpdateTrailPageProps) {
+  const { id } = await params;
   const trail = await getTrail(id);
 
   if (!trail) {
