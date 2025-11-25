@@ -1,5 +1,5 @@
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 import { ExternalLinkIcon, RouteIcon } from "lucide-react";
 
 export default function Vestibular() {
@@ -121,12 +121,10 @@ function MapEmbed() {
           className="w-full h-full border-0"
         />
       </div>
-
       {/* marcador visual central (apenas indicador visual, não interfere no iframe) */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <span className="block w-4 h-4 bg-red-600 rounded-full shadow-lg animate-pulse" />
       </div>
-
       {/* overlay compacta de ações (clean, leve) */}
       <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
         <a

@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@nextui-org/card";
+import { Card, CardBody } from "@heroui/card";
 import React from "react";
 import { HomeTrailImage } from "../atoms/homeTrailImage";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default async function TrailsSection() {
     <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
       {trailsResponse.map((trail: any) => (
         // usa `group` para efeitos de hover e transição suave
-        <Card
+        (<Card
           key={trail.id}
           className="group transition-transform duration-200 ease-out hover:-translate-y-1 transform"
         >
@@ -35,7 +35,7 @@ export default async function TrailsSection() {
               </Link>
             </div>
           </CardBody>
-        </Card>
+        </Card>)
       ))}
     </div>
   );

@@ -1,8 +1,8 @@
 "use client";
 
 import { useFormik } from "formik";
-import { Input, Textarea } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
+import { Input, Textarea } from "@heroui/input";
+import { Button } from "@heroui/button";
 
 import { ICreateTrail } from "@/types/Trail";
 import { createTrailSchema } from "@/validations/trail.schema";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import { usePathname } from "next/navigation";
 
 export default function AdminBreadcrumb() {

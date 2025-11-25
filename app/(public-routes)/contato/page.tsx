@@ -1,8 +1,8 @@
 "use client";
 
 import emailjs from "@emailjs/browser";
-import { Button } from "@nextui-org/button";
-import { Input, Textarea } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Input, Textarea } from "@heroui/input";
 import { CircleCheckIcon, LoaderCircleIcon } from "lucide-react";
 import { useRef, useState } from "react";
 

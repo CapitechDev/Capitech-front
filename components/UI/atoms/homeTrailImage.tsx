@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/image";
+import { Image } from "@heroui/image";
 
 interface IHomeTrailImageProps {
   trailName: string;

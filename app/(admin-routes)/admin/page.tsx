@@ -7,7 +7,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "@nextui-org/table";
+} from "@heroui/table";
 import { useCallback } from "react";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { IUpdateTrail } from "@/types/Trail";
 import { useTrail } from "@/hooks/useTrail";

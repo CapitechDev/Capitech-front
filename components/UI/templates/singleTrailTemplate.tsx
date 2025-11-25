@@ -1,5 +1,5 @@
 import { findOnePublicTrailCached } from "@/lib/trail/public-queries";
-import { Image } from "@nextui-org/image";
+import { Image } from "@heroui/image";
 import { notFound } from "next/navigation";
 import React from "react";
 import { SafeMarkdown } from "../molecules/safeMarkdown";

@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Image } from "@nextui-org/image";
+import { Image } from "@heroui/image";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 

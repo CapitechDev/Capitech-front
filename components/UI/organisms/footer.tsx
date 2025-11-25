@@ -1,5 +1,5 @@
-import { Image } from "@nextui-org/image";
-import { Link } from "@nextui-org/link";
+import { Image } from "@heroui/image";
+import { Link } from "@heroui/link";
 import React from "react";
 
 import { siteConfig, SiteConfig } from "@/config/site";
