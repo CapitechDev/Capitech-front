@@ -1,14 +1,12 @@
 "use server";
 
-import { apiFetchJson } from "@/services/apiFetch";
+import apiServer from "@/services/axios-server";
 import { revalidateTag } from "next/cache";
 
 export async function deleteTrailAction(id: string) {
   try {
     console.log("deletando trilha", id);
-    await apiFetchJson(`/trails/${id}`, {
-      method: "DELETE",
-    });
+    await apiServer.delete(`/trails/${id}`);
 
     revalidateTag("trails");
     revalidateTag(`trails-${id}`);
