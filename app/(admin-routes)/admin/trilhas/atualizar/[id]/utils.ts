@@ -1,10 +1,10 @@
-import { apiFetchJson } from "@/services/apiFetch";
+import api from "@/services/axios";
 import { IUpdateTrail } from "@/types/Trail";
 
 const getTrail = async (trailId: string) => {
   try {
-    const trailsResponse = await apiFetchJson<IUpdateTrail>(`/trails/${trailId}`);
-    return trailsResponse;
+    const trailsResponse = await api.get<IUpdateTrail>(`/trails/${trailId}`);
+    return trailsResponse.data;
   } catch (error) {
     console.log("Erro ao buscar trilha");
     return null;
