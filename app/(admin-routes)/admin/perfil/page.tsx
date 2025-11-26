@@ -111,7 +111,7 @@ export default function AdminProfilePage() {
             endContent={
               <button
                 aria-label="toggle password visibility"
-                className="focus:outline-none"
+                className="focus:outline-hidden"
                 type="button"
                 onClick={togglePasswordVisibility}
               >

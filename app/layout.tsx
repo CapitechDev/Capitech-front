@@ -45,7 +45,7 @@ export default function RootLayout({
           <div className="relative flex flex-col h-screen">
             <Header />
             {/* container mx-auto max-w-7xl pt-16  */}
-            <main className=" flex-grow">{children}</main>
+            <main className=" grow">{children}</main>
             <Footer />
           </div>
         </Providers>

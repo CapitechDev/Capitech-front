@@ -131,7 +131,7 @@ function MapEmbed() {
           href={osmOpen}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-white"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-xs rounded-lg shadow-xs text-xs font-medium text-gray-700 hover:bg-white"
           aria-label="Abrir no OpenStreetMap"
         >
           <ExternalLinkIcon className="w-3.5 h-3.5" />
@@ -142,7 +142,7 @@ function MapEmbed() {
           href={gmapsDirections}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 px-3 py-2 bg-capi_green text-white rounded-lg shadow-sm text-xs font-medium hover:bg-capi_green/90"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-capi_green text-white rounded-lg shadow-xs text-xs font-medium hover:bg-capi_green/90"
           aria-label="Traçar rota"
         >
           <RouteIcon className="w-3.5 h-3.5" />

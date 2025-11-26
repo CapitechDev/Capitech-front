@@ -4,7 +4,7 @@ import Image from "next/image";
 const Sobre = () => {
   return (
     <div>
-      <section className="relative bg-capi_seaGreen_about text-white flex items-center justify-center gap-8 p-8">
+      <section className="relative bg-capi_sea-green_about text-white flex items-center justify-center gap-8 p-8">
         <Image
           alt="Ícone de contato."
           className="hidden absolute left-28 w-16 sm:block"
@@ -33,7 +33,7 @@ const Sobre = () => {
         </div>
 
         {/* Texto explicativo */}
-        <div className="w-full bg-white/80 rounded-lg p-6 shadow-sm">
+        <div className="w-full bg-white/80 rounded-lg p-6 shadow-xs">
           <h2 className="text-center font-headline font-bold text-2xl mb-3 text-gray-900">
             Quem somos
           </h2>

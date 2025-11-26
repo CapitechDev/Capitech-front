@@ -93,7 +93,7 @@ export default function Register() {
                 endContent={
                   <button
                     aria-label="toggle password visibility"
-                    className="focus:outline-none"
+                    className="focus:outline-hidden"
                     type="button"
                     onClick={togglePasswordVisibility}
                   >
@@ -118,7 +118,7 @@ export default function Register() {
                 endContent={
                   <button
                     aria-label="toggle Admin Code visibility"
-                    className="focus:outline-none"
+                    className="focus:outline-hidden"
                     type="button"
                     onClick={toggleCodeVisibility}
                   >
