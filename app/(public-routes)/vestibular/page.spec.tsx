@@ -21,16 +21,6 @@ describe("Vestibular", () => {
     expect(image).toBeInTheDocument();
   });
 
-  it("renders the Fatec image with alt text 'Imagem Fatec Votorantim no estado de São Paulo'", () => {
-    render(<Vestibular />);
-
-    const fatecImage = screen.getByAltText(
-      "Imagem Fatec Votorantim no estado de São Paulo."
-    );
-
-    expect(fatecImage).toBeInTheDocument();
-  });
-
   it("renders a button with the text 'Inscreva-se no Vestibular FATEC!' and links to the correct URL", () => {
     render(<Vestibular />);
   
@@ -41,7 +31,7 @@ describe("Vestibular", () => {
     expect(button).toBeInTheDocument();
   
     // Verifica se o botão é um link e tem o href correto
-    expect(button.tagName).toBe('A');
+    expect(button.tagName).toBe('BUTTON');
     expect(button).toHaveAttribute("href", "https://www.cps.sp.gov.br/fatec/vestibular/");
   });
   

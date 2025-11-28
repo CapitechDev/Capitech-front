@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Contact from './page';
 import emailjs from '@emailjs/browser';
@@ -76,7 +76,9 @@ describe('Contact Component', () => {
     fireEvent.change(messageInput, { target: { value: 'Test Message' } });
 
     // Submit the form
-    fireEvent.click(submitButton);
+    act(() => {
+      fireEvent.click(submitButton);
+    });
 
     // Wait for success message
     await waitFor(() => {
@@ -112,7 +114,9 @@ describe('Contact Component', () => {
     fireEvent.change(messageInput, { target: { value: 'Test Message' } });
 
     // Submit the form
-    fireEvent.click(submitButton);
+    act(() => {
+      fireEvent.click(submitButton);
+    });
 
     // Wait for error message
     await waitFor(() => {
@@ -143,7 +147,9 @@ describe('Contact Component', () => {
     fireEvent.change(messageInput, { target: { value: 'Test Message' } });
 
     // Submit the form
-    fireEvent.click(submitButton);
+    act(() => {
+      fireEvent.click(submitButton);
+    });
 
     // Check if submit button is disabled
     expect(submitButton).toBeDisabled();

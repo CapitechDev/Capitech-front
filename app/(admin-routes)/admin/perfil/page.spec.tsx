@@ -1,19 +1,22 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 import useToast from "../../../../hooks/useToast";
 import api from "../../../../services/axios";
+import apiServer from "../../../../services/axios-server";
 
 import AdminProfilePage from "./page";
 
 jest.mock("next-auth/react");
 jest.mock("../../../../hooks/useToast");
 jest.mock("../../../../services/axios");
+jest.mock("../../../../services/axios-server");
 
 describe("AdminProfilePage", () => {
   const mockUseSession = useSession as jest.Mock;
+  const mockSignOut = signOut as jest.Mock;
   const mockUseToast = useToast as jest.Mock;
   const mockApi = api.put as jest.Mock;
 
@@ -21,13 +24,13 @@ describe("AdminProfilePage", () => {
     mockUseSession.mockReturnValue({
       data: {
         user: {
-          _id: "123",
+          id: "123",
           email: "test@example.com",
           name: "Test User",
         },
       },
     });
-
+    mockSignOut.mockResolvedValue(undefined);
     mockUseToast.mockReturnValue({
       showSuccessToast: jest.fn(),
       showErrorToast: jest.fn(),
@@ -56,11 +59,15 @@ describe("AdminProfilePage", () => {
 
     expect(passwordInput).toHaveAttribute("type", "password");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "text");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "password");
   });
@@ -79,19 +86,19 @@ describe("AdminProfilePage", () => {
       target: { value: "updated@example.com" },
     });
 
-    fireEvent.submit(screen.getByRole("button", { name: /enviar/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showSuccessToast).toHaveBeenCalledWith(
-        "User updated! Faça login novamente."
+        "Usuário atualizado com sucesso! Faça login novamente."
       );
     });
   });
 
   it("shows error toast on failed form submission", async () => {
-    mockApi.mockResolvedValue({
-      data: { success: false, message: "Error updating user" },
-    });
+    mockApi.mockRejectedValue(new Error("Error updating user"));
 
     render(<AdminProfilePage />);
 
@@ -102,11 +109,13 @@ describe("AdminProfilePage", () => {
       target: { value: "updated@example.com" },
     });
 
-    fireEvent.submit(screen.getByRole("button", { name: /enviar/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(
-        "Error updating user"
+        "Erro ao atualizar usuário."
       );
     });
   });
