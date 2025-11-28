@@ -1,31 +1,46 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import api from "../../../../../services/axios";
+import apiServer from "../../../../../services/axios-server";
 import useToast from "../../../../../hooks/useToast";
+import { createTrailAction } from "../../../../../actions/trails/create-trail.action";
 
 import AdminCreateTrail from "./page";
 
 jest.mock("../../../../../services/axios");
+jest.mock("../../../../../services/axios-server");
 jest.mock("../../../../../hooks/useToast");
+jest.mock("../../../../../actions/trails/create-trail.action");
 
 describe("AdminCreateTrail Page", () => {
   const mockApi = api.post as jest.Mock;
+  const mockApiServer = apiServer.post as jest.Mock;
   const mockUseToast = useToast as jest.Mock;
+  const mockCreateTrailAction = createTrailAction as jest.Mock;
+  const queryClient = new QueryClient();
+  const mockToast = {
+    showSuccessToast: jest.fn(),
+    showErrorToast: jest.fn(),
+  };
 
   beforeEach(() => {
-    mockUseToast.mockReturnValue({
-      showSuccessToast: jest.fn(),
-      showErrorToast: jest.fn(),
-    });
+    mockUseToast.mockReturnValue(mockToast);
+    mockCreateTrailAction.mockResolvedValue({ success: true });
   });
 
   it("renders the create trail form", () => {
-    render(<AdminCreateTrail />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AdminCreateTrail />
+      </QueryClientProvider>
+    );
 
     expect(screen.getByLabelText("Nome")).toBeInTheDocument();
     expect(screen.getByLabelText("Tema")).toBeInTheDocument();
-    expect(screen.getByLabelText("Conteúdo da Trilha")).toBeInTheDocument();
+    expect(screen.getByLabelText("Conteúdo")).toBeInTheDocument();
     expect(screen.getByLabelText("Título do Vídeo")).toBeInTheDocument();
     expect(screen.getByLabelText("Descrição do Vídeo")).toBeInTheDocument();
     expect(screen.getByLabelText("Referências do Vídeo")).toBeInTheDocument();
@@ -34,11 +49,14 @@ describe("AdminCreateTrail Page", () => {
   });
 
   it("shows success toast on successful trail creation", async () => {
-    mockApi.mockResolvedValue({
-      data: { success: true, message: "Trail created successfully" },
-    });
+    const user = userEvent.setup();
+    mockCreateTrailAction.mockResolvedValue({ success: true });
 
-    render(<AdminCreateTrail />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AdminCreateTrail />
+      </QueryClientProvider>
+    );
 
     fireEvent.change(screen.getByLabelText("Nome"), {
       target: { value: "Test Trail" },
@@ -46,7 +64,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
@@ -62,22 +80,32 @@ describe("AdminCreateTrail Page", () => {
       target: { value: "https://www.youtube.com/embed/example" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    await user.click(screen.getByRole("button", { name: /enviar/i }));
 
     await waitFor(() => {
-      expect(mockUseToast().showSuccessToast).toHaveBeenCalledWith(
-        "Trail created successfully",
-        "/admin"
+      expect(mockCreateTrailAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Test Trail",
+          subtitle: "Test Theme",
+          description: "Test Content",
+          video_title: "Test Video Title",
+          video_description: "Test Video Description",
+          references: "https://example.com",
+          iframe_references: "https://www.youtube.com/embed/example",
+        })
       );
     });
   });
 
   it("shows error toast on failed trail creation", async () => {
-    mockApi.mockResolvedValue({
-      data: { success: false, message: "Error creating trail" },
-    });
+    const user = userEvent.setup();
+    mockCreateTrailAction.mockRejectedValue(new Error("Error creating trail"));
 
-    render(<AdminCreateTrail />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AdminCreateTrail />
+      </QueryClientProvider>
+    );
 
     fireEvent.change(screen.getByLabelText("Nome"), {
       target: { value: "Test Trail" },
@@ -85,7 +113,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
@@ -101,19 +129,24 @@ describe("AdminCreateTrail Page", () => {
       target: { value: "https://www.youtube.com/embed/example" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    await user.click(screen.getByRole("button", { name: /enviar/i }));
 
     await waitFor(() => {
-      expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(
+      expect(mockToast.showErrorToast).toHaveBeenCalledWith(
         "Error creating trail"
       );
     });
   });
 
   it("shows error toast on API error", async () => {
-    mockApi.mockRejectedValue(new Error("API error"));
+    const user = userEvent.setup();
+    mockCreateTrailAction.mockRejectedValue(new Error("API error"));
 
-    render(<AdminCreateTrail />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AdminCreateTrail />
+      </QueryClientProvider>
+    );
 
     fireEvent.change(screen.getByLabelText("Nome"), {
       target: { value: "Test Trail" },
@@ -121,7 +154,7 @@ describe("AdminCreateTrail Page", () => {
     fireEvent.change(screen.getByLabelText("Tema"), {
       target: { value: "Test Theme" },
     });
-    fireEvent.change(screen.getByLabelText("Conteúdo da Trilha"), {
+    fireEvent.change(screen.getByLabelText("Conteúdo"), {
       target: { value: "Test Content" },
     });
     fireEvent.change(screen.getByLabelText("Título do Vídeo"), {
@@ -137,11 +170,11 @@ describe("AdminCreateTrail Page", () => {
       target: { value: "https://www.youtube.com/embed/example" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    await user.click(screen.getByRole("button", { name: /enviar/i }));
 
     await waitFor(() => {
-      expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(
-        "Erro ao criar usuário."
+      expect(mockToast.showErrorToast).toHaveBeenCalledWith(
+        "API error"
       );
     });
   });

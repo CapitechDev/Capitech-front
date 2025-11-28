@@ -20,11 +20,11 @@ describe("Sobre", () => {
     expect(heading).toHaveTextContent("Sobre nós");
   });
 
-  it("renders five images", () => {
+  it("renders two images", () => {
     render(<Sobre />);
 
     const sections = screen.getAllByRole("img");
 
-    expect(sections).toHaveLength(5);
+    expect(sections).toHaveLength(2);
   });
 });

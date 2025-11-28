@@ -8,6 +8,10 @@ export async function createTrailAction(data: ICreateTrail) {
   try {
     const result = await apiServer.post("/trails", data);
 
+    if (!result.data.success) {
+      throw new Error(result.data.message || "Erro ao criar trilha");
+    }
+
     revalidateTag("trails");
 
     return result.data;

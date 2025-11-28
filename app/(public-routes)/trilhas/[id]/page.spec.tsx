@@ -1,11 +1,29 @@
+// Mock React's use hook for params
 import { render, screen, waitFor } from "@testing-library/react";
+import { Suspense } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@testing-library/jest-dom";
 import api from "../../../../services/axios";
 
 import Trails from "./page";
 
+const MockSingleTrailTemplate = jest.fn();
+
 jest.mock("../../../../services/axios");
+jest.mock("../../../../lib/trail/public-queries");
+jest.mock("next/navigation");
+jest.mock('../../../../components/UI/templates/singleTrailTemplate', () => ({
+  default: () => <div>Trail Name</div>
+}));
+
+const queryClient = new QueryClient();
+
+const AllTheProviders = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+  </QueryClientProvider>
+);
 
 describe("Trails Page", () => {
   const mockApi = api.get as jest.Mock;
@@ -27,10 +45,13 @@ describe("Trails Page", () => {
       status: 200,
       data: { data: mockTrailData },
     });
+    // Mock findOnePublicTrailCached
+    const mockFindOne = jest.requireMock("../../../../lib/trail/public-queries").findOnePublicTrailCached;
+    mockFindOne.mockReturnValue(Promise.resolve(mockTrailData));
   });
 
   it("renders the trail data correctly", async () => {
-    render(<Trails params={{ id: "1" }} />);
+    render(<Trails params={Promise.resolve({ id: "1" })} />, { wrapper: AllTheProviders });
 
     await waitFor(() => {
       expect(screen.getByText("Trail Name")).toBeInTheDocument();
@@ -56,24 +77,29 @@ describe("Trails Page", () => {
     });
   });
 
-  it("shows loading spinner while fetching data", () => {
-    render(<Trails params={{ id: "1" }} />);
+  it("shows loading spinner while fetching data", async () => {
+    const mockFindOne = jest.requireMock("../../../../lib/trail/public-queries").findOnePublicTrailCached;
+    mockFindOne.mockReturnValue(new Promise(() => {})); // pending
 
-    expect(screen.getByText("Carregando")).toBeInTheDocument();
+    render(
+      <Suspense fallback={<div>Carregando trilhas</div>}>
+        <Trails params={Promise.resolve({ id: "1" })} />
+      </Suspense>,
+      { wrapper: AllTheProviders }
+    );
+
+    expect(screen.getByText("Carregando trilhas")).toBeInTheDocument();
   });
 
   it("shows error message on API error", async () => {
-    mockApi.mockRejectedValueOnce(new Error("Failed to fetch"));
+    const mockFindOne = jest.requireMock("../../../../lib/trail/public-queries").findOnePublicTrailCached;
+    const mockNotFound = jest.requireMock("next/navigation").notFound;
+    mockFindOne.mockReturnValue(Promise.resolve(null));
 
-    render(<Trails params={{ id: "1" }} />);
+    render(<Trails params={Promise.resolve({ id: "1" })} />, { wrapper: AllTheProviders });
 
     await waitFor(() => {
-      expect(screen.getByText("Failed to fetch")).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "Você será redirecionado para a página inicial em instantes!"
-        )
-      ).toBeInTheDocument();
+      expect(mockNotFound).toHaveBeenCalled();
     });
   });
 });

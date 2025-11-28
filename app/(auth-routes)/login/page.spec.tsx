@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 import { signIn } from "next-auth/react";
@@ -40,11 +40,15 @@ describe("LoginPage", () => {
 
     expect(passwordInput).toHaveAttribute("type", "password");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "text");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "password");
   });
@@ -61,7 +65,9 @@ describe("LoginPage", () => {
       target: { value: "password" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /login/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /login/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showSuccessToast).toHaveBeenCalledWith(
@@ -83,7 +89,9 @@ describe("LoginPage", () => {
       target: { value: "wrongpassword" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /login/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /login/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(

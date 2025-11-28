@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 import api from "../../../services/axios";
@@ -40,11 +40,15 @@ describe("Register Page", () => {
 
     expect(passwordInput).toHaveAttribute("type", "password");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "text");
 
-    fireEvent.click(toggleButton);
+    act(() => {
+      fireEvent.click(toggleButton);
+    });
 
     expect(passwordInput).toHaveAttribute("type", "password");
   });
@@ -69,7 +73,9 @@ describe("Register Page", () => {
       target: { value: "admin123" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showSuccessToast).toHaveBeenCalledWith(
@@ -99,7 +105,9 @@ describe("Register Page", () => {
       target: { value: "admin123" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(
@@ -126,7 +134,9 @@ describe("Register Page", () => {
       target: { value: "admin123" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /registre-se/i }));
+    });
 
     await waitFor(() => {
       expect(mockUseToast().showErrorToast).toHaveBeenCalledWith(
