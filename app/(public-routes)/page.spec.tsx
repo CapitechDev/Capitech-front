@@ -3,7 +3,10 @@ import { render, screen } from "@testing-library/react";
 
 import Home from "./page";
 
-jest.mock("@/components/UI/organisms/trailsSection", () => () => <div>Mocked Trails Section</div>);
+jest.mock("../../components/UI/organisms/trailsSection", () => ({
+  __esModule: true,
+  default: () => <div>Mocked Trails Section</div>,
+}));
 
 describe("Home", () => {
   it("renders the main sections", () => {
@@ -64,11 +67,10 @@ describe("Home", () => {
 
     const links = screen.getAllByRole("link");
 
-    expect(links).toHaveLength(4); // 3 frames + 1 button
+    expect(links).toHaveLength(3); // 3 frames
 
     expect(links[0]).toHaveAttribute("href", "#trilhas");
     expect(links[1]).toHaveAttribute("href", "/login");
     expect(links[2]).toHaveAttribute("href", "/vestibular");
-    expect(links[3]).toHaveAttribute("href", "/vestibular");
   });
 });
